@@ -32,7 +32,7 @@ public class AttackCombo : StateMachineBehaviour
         {
             if(Input.GetMouseButtonDown(0))
             {
-                if (stateInfo.normalizedTime >= .40 && stateInfo.normalizedTime < 1)
+                if (stateInfo.normalizedTime >= .40 && CharacterController.instance.HitSkeleton())
                 {
                     animator.SetBool("HitCombo", true);
                 }
@@ -44,7 +44,7 @@ public class AttackCombo : StateMachineBehaviour
             else if (stateInfo.IsName("SlashUp"))
                 CharacterController.instance.allowAttack = (stateInfo.normalizedTime * stateInfo.length > .15f);
             else if (stateInfo.IsName("SlashDown"))
-                CharacterController.instance.allowAttack = (stateInfo.normalizedTime * stateInfo.length > .6f);
+                CharacterController.instance.allowAttack = (stateInfo.normalizedTime * stateInfo.length > .6f && stateInfo.normalizedTime < .45f);
             else if (stateInfo.IsName("Stab"))
                 CharacterController.instance.allowAttack = (stateInfo.normalizedTime * stateInfo.length > .3f);
 

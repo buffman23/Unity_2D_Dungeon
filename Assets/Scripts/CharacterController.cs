@@ -30,6 +30,7 @@ public class CharacterController : MonoBehaviour
     private bool _leftClick;
     private Attack _currentAttack, _previousAttack;
     private List<Skeleton> _skeles = new List<Skeleton>(4);
+    private bool _hitSkeleton;
     
     private int _faceDirection;
 
@@ -164,16 +165,18 @@ public class CharacterController : MonoBehaviour
 
         _timeSinceLastJump += Time.fixedDeltaTime;
 
-        //Debug.Log("_currentAttack=" + _currentAttack + ", _previousAttack=" + _previousAttack);
         if (_currentAttack != Attack.None && _currentAttack != _previousAttack && allowAttack)
         {
+            
             foreach (Skeleton skele in new List<Skeleton>(_skeles))
             {
                 skele.Knockback(new Vector3(3 * _faceDirection, 2, 0));
+                
                 switch (_currentAttack)
                 {
                     case Attack.SlashDown:
                         skele.Attack(10);
+                        
                         break;
                     case Attack.SlashUp:
                         skele.Attack(20);
@@ -184,6 +187,8 @@ public class CharacterController : MonoBehaviour
                 }
                 _previousAttack = _currentAttack;
             }
+
+            _hitSkeleton = _skeles.Count > 0;
         }
     }
 
@@ -241,6 +246,11 @@ public class CharacterController : MonoBehaviour
         _currentAttack = attack;
         if (_currentAttack == Attack.None)
             _previousAttack = Attack.None;
+    }
+
+    public bool HitSkeleton()
+    {
+        return _hitSkeleton;
     }
 }
 
