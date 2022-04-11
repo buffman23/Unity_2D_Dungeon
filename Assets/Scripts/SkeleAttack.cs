@@ -2,47 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackCombo : StateMachineBehaviour
+public class SkeleAttack : StateMachineBehaviour
 {
-    bool canHitCombo;
+    bool cooldown = false;
+    Skeleton skele;
+    Vector3 knockback = new Vector3(20, 10, 0);
+    Vector3 knockforward = new Vector3(20, 0, 0);
 
-
-    //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
+    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        canHitCombo = true;
-        animator.SetBool("HitCombo", false);
-
-        if (stateInfo.IsName("NoAttack"))
-            CharacterController.instance.setAttack(Attack.None);
-        else if (stateInfo.IsName("SlashUp"))
-            CharacterController.instance.setAttack(Attack.SlashUp);
-        else if (stateInfo.IsName("SlashDown"))
-            CharacterController.instance.setAttack(Attack.SlashDown);
-        else if (stateInfo.IsName("Stab"))
-            CharacterController.instance.setAttack(Attack.Stab);
+        cooldown = false;
+        skele = animator.gameObject.GetComponent<Skeleton>();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (canHitCombo)
+        if(stateInfo.normalizedTime > .5 && !cooldown && animator.GetBool("Attack"))
         {
-            if(Input.GetMouseButtonDown(0))
-            {
-                if (stateInfo.normalizedTime >= .40 && stateInfo.normalizedTime < 1)
-                {
-                    animator.SetBool("HitCombo", true);
-                }
-                canHitCombo = false;
-            } 
+            knockback.x = Mathf.Abs(knockback.x) * (skele.transform.localScale.x > 0 ? 1 : -1);
+            CharacterController.instance.Knockback(knockback);
+            //skele.Knockback(-knockforward);
+            cooldown = true;
         }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
-
+    //    
     //}
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

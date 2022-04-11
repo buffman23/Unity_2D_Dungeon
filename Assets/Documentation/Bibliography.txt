@@ -1,5 +1,5 @@
 Tutorial Videos:
 How to rig a 2D Sprite: https://www.youtube.com/watch?v=eXIuizGzY2A
-
+How to make a health bar: https://www.youtube.com/watch?v=v1UGTTeQzbo
 
 Sprites Created using Krita and Adobe Photoshop

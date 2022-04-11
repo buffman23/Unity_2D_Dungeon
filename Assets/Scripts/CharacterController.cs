@@ -25,6 +25,11 @@ public class CharacterController : MonoBehaviour
     private Transform _headTrans, _headBoneTrans, _torsoBoneTrans;
     private Animator _animator;
     private bool _leftClick;
+    private Attack _currentAttack, _previousAttack;
+    
+    private int _faceDirection;
+
+    private int _debrisMask;
 
     private void Awake()
     {
@@ -44,6 +49,7 @@ public class CharacterController : MonoBehaviour
 
         _originalScale = transform.localScale;
         _flippedScale = new Vector3(-_originalScale.x, _originalScale.y, _originalScale.z);
+        _debrisMask = LayerMask.NameToLayer("Debris");
     }
 
     // Update is called once per frame
@@ -136,19 +142,19 @@ public class CharacterController : MonoBehaviour
         //Debug.Log("_speedVec:" +_speedVec);
         //_rigidBody.MovePosition(_speedVec);
 
-        int faceDirection = 1;
         if (mouseScreenX < Screen.width / 2)
         {
             transform.localScale = _flippedScale;
-            faceDirection = -1;
+            _faceDirection = -1;
         }
         else
         {
+            _faceDirection = 1;
             transform.localScale = _originalScale;
         }
 
         _rigidBody.AddForce(_speedVec * _rigidBody.mass, ForceMode2D.Impulse);
-        _animator.SetFloat("VelocityX", _rigidBody.velocity.x * faceDirection);
+        _animator.SetFloat("VelocityX", _rigidBody.velocity.x * _faceDirection);
         _animator.SetFloat("SpeedX", Mathf.Abs(_rigidBody.velocity.x));
         _animator.SetFloat("FallMultiplier", Mathf.Abs(_rigidBody.velocity.x) * (grounded ? 1f :.5f));
 
@@ -167,13 +173,52 @@ public class CharacterController : MonoBehaviour
 
     private bool isGrounded()
     {
-        RaycastHit2D hit = Physics2D.Raycast(_floorCheck.position, -Vector2.up);
-        //Debug.Log("floor distance: " + hit.distance);
-        return hit.collider != null && hit.distance < floorThreshold;
+        RaycastHit2D hit = Physics2D.Raycast(_floorCheck.position, -Vector2.up, floorThreshold, 1);
+        return hit.collider != null;
     }
 
     public Animator GetAnimator()
     {
         return _animator;
     }
+
+    public void Knockback(Vector3 force)
+    {
+        _rigidBody.AddForce(force, ForceMode2D.Impulse);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (_currentAttack != Attack.None && _currentAttack != _previousAttack)
+        {
+            Skeleton skele = other.gameObject.GetComponent<Skeleton>();
+
+            if (skele != null)
+            {
+                Debug.Log("Hit skele");
+                skele.Knockback(new Vector3(3 * _faceDirection, 2, 0));
+                switch (_currentAttack)
+                {
+                    case Attack.SlashDown:
+                        skele.Attack(10);
+                        break;
+                    case Attack.SlashUp:
+                        skele.Attack(20);
+                        break;
+                    case Attack.Stab:
+                        skele.Attack(30);
+                        break;
+                }
+                _previousAttack = _currentAttack;
+            }
+        }
+    }
+
+    public void setAttack(Attack attack)
+    {
+        _currentAttack = attack;
+    }
 }
+
+
+
