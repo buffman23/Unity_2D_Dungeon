@@ -35,6 +35,7 @@ public class CharacterController : MonoBehaviour
     private int _faceDirection;
 
     private int _debrisMask;
+    private int _floorMask;
 
     private void Awake()
     {
@@ -55,6 +56,7 @@ public class CharacterController : MonoBehaviour
         _originalScale = transform.localScale;
         _flippedScale = new Vector3(-_originalScale.x, _originalScale.y, _originalScale.z);
         _debrisMask = LayerMask.NameToLayer("Debris");
+        _floorMask = LayerMask.GetMask(new string[] {"Default", "Skeleton"});
     }
 
     // Update is called once per frame
@@ -87,6 +89,17 @@ public class CharacterController : MonoBehaviour
 
         _headBoneTrans.rotation = Quaternion.Euler(0f, 0f, headRotation * Mathf.Rad2Deg + 90f);
 
+        if (mouseScreenX < Screen.width / 2)
+        {
+            transform.localScale = _flippedScale;
+            _faceDirection = -1;
+        }
+        else
+        {
+            _faceDirection = 1;
+            transform.localScale = _originalScale;
+        }
+
         if (Input.GetKey(KeyCode.D))
         {
             accX = acceleration;
@@ -98,19 +111,20 @@ public class CharacterController : MonoBehaviour
             direction = -1;
         }
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (_faceDirection != (_rigidBody.velocity.x > 0 ? 1 : -1))
+        {
+            _maxSpeed = maxSpeed;
+        }
+        else if (Input.GetKey(KeyCode.LeftShift))
         {
             _maxSpeed = maxSpeed * 2;
         }
-        else if (Input.GetKey(KeyCode.LeftControl))
+
+        if (Input.GetKey(KeyCode.LeftControl))
         {
             _maxSpeed = maxSpeed / 2;
             
-        } else
-        {
-
-            _maxSpeed = maxSpeed;
-        }
+        } 
 
         if (grounded)
         {
@@ -147,17 +161,6 @@ public class CharacterController : MonoBehaviour
         //Debug.Log("_speedVec:" +_speedVec);
         //_rigidBody.MovePosition(_speedVec);
 
-        if (mouseScreenX < Screen.width / 2)
-        {
-            transform.localScale = _flippedScale;
-            _faceDirection = -1;
-        }
-        else
-        {
-            _faceDirection = 1;
-            transform.localScale = _originalScale;
-        }
-
         _rigidBody.AddForce(_speedVec * _rigidBody.mass, ForceMode2D.Impulse);
         _animator.SetFloat("VelocityX", _rigidBody.velocity.x * _faceDirection);
         _animator.SetFloat("SpeedX", Mathf.Abs(_rigidBody.velocity.x));
@@ -170,7 +173,7 @@ public class CharacterController : MonoBehaviour
             
             foreach (Skeleton skele in new List<Skeleton>(_skeles))
             {
-                skele.Knockback(new Vector3(3 * _faceDirection, 2, 0));
+                skele.Knockback(new Vector3(3 * _faceDirection, 2, 0) * skele.gameObject.GetComponent<Rigidbody2D>().mass);
                 
                 switch (_currentAttack)
                 {
@@ -204,7 +207,7 @@ public class CharacterController : MonoBehaviour
 
     private bool isGrounded()
     {
-        RaycastHit2D hit = Physics2D.Raycast(_floorCheck.position, -Vector2.up, floorThreshold, 1);
+        RaycastHit2D hit = Physics2D.Raycast(_floorCheck.position, -Vector2.up, floorThreshold, _floorMask);
         return hit.collider != null;
     }
 

@@ -24,6 +24,7 @@ public class Skeleton : MonoBehaviour
 
     private List<GameObject> bones = new List<GameObject>();
     private int layerMask;
+    private BoxCollider2D _collider;
 
     private static CharacterController _characterController;
     private static Transform _targetTrans1, _targetTrans2;
@@ -125,6 +126,7 @@ public class Skeleton : MonoBehaviour
         _originalScale = transform.localScale;
         _flippedScale = new Vector3(-_originalScale.x, _originalScale.y, _originalScale.z);
         _healthBar = GetComponent<HealthBar>();
+        _collider = GetComponent<BoxCollider2D>();
 
         if (_characterController == null)
         {
