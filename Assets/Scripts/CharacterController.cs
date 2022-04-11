@@ -12,6 +12,9 @@ public class CharacterController : MonoBehaviour
     public float floorThreshold;
     public float jumpCooldown;
 
+    [HideInInspector]
+    public bool allowAttack;
+
     public static CharacterController instance;
 
     private Vector3 _speedVec;
@@ -26,6 +29,7 @@ public class CharacterController : MonoBehaviour
     private Animator _animator;
     private bool _leftClick;
     private Attack _currentAttack, _previousAttack;
+    private List<Skeleton> _skeles = new List<Skeleton>(4);
     
     private int _faceDirection;
 
@@ -159,6 +163,28 @@ public class CharacterController : MonoBehaviour
         _animator.SetFloat("FallMultiplier", Mathf.Abs(_rigidBody.velocity.x) * (grounded ? 1f :.5f));
 
         _timeSinceLastJump += Time.fixedDeltaTime;
+
+        //Debug.Log("_currentAttack=" + _currentAttack + ", _previousAttack=" + _previousAttack);
+        if (_currentAttack != Attack.None && _currentAttack != _previousAttack && allowAttack)
+        {
+            foreach (Skeleton skele in new List<Skeleton>(_skeles))
+            {
+                skele.Knockback(new Vector3(3 * _faceDirection, 2, 0));
+                switch (_currentAttack)
+                {
+                    case Attack.SlashDown:
+                        skele.Attack(10);
+                        break;
+                    case Attack.SlashUp:
+                        skele.Attack(20);
+                        break;
+                    case Attack.Stab:
+                        skele.Attack(30);
+                        break;
+                }
+                _previousAttack = _currentAttack;
+            }
+        }
     }
 
     private void InitReferences()
@@ -189,34 +215,32 @@ public class CharacterController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (_currentAttack != Attack.None && _currentAttack != _previousAttack)
+        Skeleton skele = other.gameObject.GetComponent<Skeleton>();
+        if(skele != null)
         {
-            Skeleton skele = other.gameObject.GetComponent<Skeleton>();
-
-            if (skele != null)
+            if (!_skeles.Contains(skele))
             {
-                Debug.Log("Hit skele");
-                skele.Knockback(new Vector3(3 * _faceDirection, 2, 0));
-                switch (_currentAttack)
-                {
-                    case Attack.SlashDown:
-                        skele.Attack(10);
-                        break;
-                    case Attack.SlashUp:
-                        skele.Attack(20);
-                        break;
-                    case Attack.Stab:
-                        skele.Attack(30);
-                        break;
-                }
-                _previousAttack = _currentAttack;
+                _skeles.Add(skele);
+                //Debug.Log(_skeles.Count);
             }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        Skeleton skele = other.gameObject.GetComponent<Skeleton>();
+        if (skele != null)
+        {
+            _skeles.Remove(skele);
+            //Debug.Log(_skeles.Count);
         }
     }
 
     public void setAttack(Attack attack)
     {
         _currentAttack = attack;
+        if (_currentAttack == Attack.None)
+            _previousAttack = Attack.None;
     }
 }
 

@@ -21,6 +21,8 @@ public class AttackCombo : StateMachineBehaviour
             CharacterController.instance.setAttack(Attack.SlashDown);
         else if (stateInfo.IsName("Stab"))
             CharacterController.instance.setAttack(Attack.Stab);
+
+        CharacterController.instance.allowAttack = false;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -35,7 +37,18 @@ public class AttackCombo : StateMachineBehaviour
                     animator.SetBool("HitCombo", true);
                 }
                 canHitCombo = false;
-            } 
+            }
+
+            if (stateInfo.IsName("NoAttack"))
+                CharacterController.instance.allowAttack = false;
+            else if (stateInfo.IsName("SlashUp"))
+                CharacterController.instance.allowAttack = (stateInfo.normalizedTime * stateInfo.length > .15f);
+            else if (stateInfo.IsName("SlashDown"))
+                CharacterController.instance.allowAttack = (stateInfo.normalizedTime * stateInfo.length > .6f);
+            else if (stateInfo.IsName("Stab"))
+                CharacterController.instance.allowAttack = (stateInfo.normalizedTime * stateInfo.length > .3f);
+
+
         }
     }
 
