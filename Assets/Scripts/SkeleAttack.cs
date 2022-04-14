@@ -6,13 +6,8 @@ public class SkeleAttack : StateMachineBehaviour
 {
     bool cooldown = false;
     Skeleton skele;
-<<<<<<< Updated upstream
-    Vector3 knockback = new Vector3(20, 10, 0);
-    Vector3 knockforward = new Vector3(20, 0, 0);
-=======
     Vector3 knockbackTemplate = new Vector3(10, 5, 0);
     Vector3 knockback;
->>>>>>> Stashed changes
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -26,8 +21,9 @@ public class SkeleAttack : StateMachineBehaviour
     {
         if(stateInfo.normalizedTime > .5 && !cooldown && animator.GetBool("Attack"))
         {
-            knockback.x = Mathf.Abs(knockbackTemplate.x) * (skele.transform.localScale.x > 0 ? 1 : -1);
-            knockback.y = Mathf.Max(knockbackTemplate.y - CharacterController.instance.GetComponent<Rigidbody2D>().velocity.y, 0);
+            knockback.x = knockbackTemplate.x * (skele.transform.localScale.x > 0 ? 1 : -1);
+            knockback.y = Mathf.Max(knockbackTemplate.y - CharacterController.instance.GetComponent<Rigidbody2D>().velocity.y);
+            //knockback.y = Mathf.Max(knockbackTemplate.y - CharacterController.instance.GetComponent<Rigidbody2D>().velocity.y);
 
             CharacterController.instance.Knockback(knockback);
             //skele.Knockback(-knockforward);
