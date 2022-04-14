@@ -22,7 +22,8 @@ public class SkeleAttack : StateMachineBehaviour
         if(stateInfo.normalizedTime > .5 && !cooldown && animator.GetBool("Attack"))
         {
             knockback.x = knockbackTemplate.x * (skele.transform.localScale.x > 0 ? 1 : -1);
-            knockback.y = Mathf.Max(knockbackTemplate.y - CharacterController.instance.GetComponent<Rigidbody2D>().velocity.y);
+            Vector3 playerVelocity = CharacterController.instance.GetComponent<Rigidbody2D>().velocity;
+            knockback.y = Mathf.Abs(playerVelocity.y) < .1f ? knockbackTemplate.y : 0f;
             //knockback.y = Mathf.Max(knockbackTemplate.y - CharacterController.instance.GetComponent<Rigidbody2D>().velocity.y);
 
             CharacterController.instance.Knockback(knockback);
