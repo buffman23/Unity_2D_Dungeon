@@ -33,7 +33,9 @@ public class CharacterController : MonoBehaviour
     private bool _leftClick;
     private Attack _currentAttack, _previousAttack;
     private List<Skeleton> _skeles = new List<Skeleton>(4);
+    private List<GameObject> bones = new List<GameObject>();
     private bool _hitSkeleton;
+    private GameObject _playerCameraGO;
     
     private int _faceDirection;
 
@@ -67,12 +69,24 @@ public class CharacterController : MonoBehaviour
         _floorMask = LayerMask.GetMask(new string[] {"Default", "Skeleton", "DartBoard"});
         _canvasGO.SetActive(true);
 
+        foreach (Transform childTrans in transform)
+        {
+            SpriteRenderer renderer = childTrans.GetComponent<SpriteRenderer>();
+            if (renderer != null)
+            {
+                bones.Add(childTrans.gameObject);
+            }
+        }
+
         updateHealthBar();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (health == 0)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             _animator.SetBool("Attack", true);
@@ -85,6 +99,9 @@ public class CharacterController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (health == 0)
+            return;
+
         float accX = 0;
         float direction = 1;
         bool grounded = isGrounded();
@@ -218,6 +235,7 @@ public class CharacterController : MonoBehaviour
         _redbar = transform.Find("PlayerCanvas/Health/Bar").GetComponent<Image>();
         _greenbar = transform.Find("PlayerCanvas/Health/Bar/Green").GetComponent<Image>();
         _canvasGO = transform.Find("PlayerCanvas").gameObject;
+        _playerCameraGO = transform.Find("PlayerCamera").gameObject;
 
         _headSprites = Resources.LoadAll<Sprite>("Sprites/Heads");
 
@@ -289,6 +307,13 @@ public class CharacterController : MonoBehaviour
     {
         health = Mathf.Max(0, health - damage);
         updateHealthBar();
+        if(health == 0)
+        {
+            StartCoroutine(FallApart());
+            _playerCameraGO.transform.SetParent(null);
+            //_playerCameraGO.
+
+        }
     }
 
     public void Heal(float healing)
@@ -318,6 +343,42 @@ public class CharacterController : MonoBehaviour
         {
             _headDisplay.sprite = _deadHead;
         }
+    }
+
+    IEnumerator FallApart()
+    {
+        Destroy(transform.Find("lower_torso").gameObject);
+        Destroy(transform.GetComponent<BoxCollider2D>());
+
+        foreach (BoxCollider2D collider in transform.GetComponents<BoxCollider2D>())
+            Destroy(collider);
+
+        foreach (GameObject bone in bones)
+        {
+            bone.AddComponent<Rigidbody2D>();
+            bone.AddComponent<BoxCollider2D>();
+            bone.layer = LayerMask.NameToLayer("Debris");
+        }
+
+        yield return new WaitForSeconds(0f);
+
+        /*
+        yield return new WaitForSeconds(3);
+
+        while (bones.Count > 0)
+        {
+            int idx = Random.Range(0, bones.Count);
+            GameObject bone = bones[idx];
+            bones.RemoveAt(idx);
+            Destroy(bone.GetComponent<BoxCollider2D>());
+            yield return new WaitForSeconds(.1f);
+        }
+
+        yield return new WaitForSeconds(3);
+
+        Destroy(this.gameObject);
+
+        */
     }
 }
 
