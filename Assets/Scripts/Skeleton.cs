@@ -10,6 +10,8 @@ public class Skeleton : MonoBehaviour
     public float knockbackCooldown;
     public float health;
 
+    public static float attackDamage = 10;
+
     private Rigidbody2D _rigidBody;
     private Animator _animator;
     private Transform _floorCheck;
@@ -46,7 +48,6 @@ public class Skeleton : MonoBehaviour
         }
 
         layerMask = LayerMask.GetMask(new string[]{"Default", "Player"});
-        Debug.Log("Layer Mask = " + layerMask);
     }
 
     // Update is called once per frame
@@ -145,7 +146,7 @@ public class Skeleton : MonoBehaviour
         }
     }
 
-    public void Attack(float damage)
+    public void Damage(float damage)
     {
         health = Mathf.Max(0, health - damage);
         _healthBar.SetHealth(health);

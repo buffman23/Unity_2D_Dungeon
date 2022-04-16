@@ -1483,8 +1483,8 @@ GameObject:
   - component: {fileID: 5831374804107674638}
   - component: {fileID: 744550675630121638}
   m_Layer: 3
-  m_Name: skeleton
-  m_TagString: Untagged
+  m_Name: Skeleton
+  m_TagString: Boom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

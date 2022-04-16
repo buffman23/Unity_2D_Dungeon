@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class CharacterController : MonoBehaviour
     public float jumpHeight;
     public float floorThreshold;
     public float jumpCooldown;
+    public float maxHealth;
+    public float health;
 
     [HideInInspector]
     public bool allowAttack;
@@ -37,6 +40,10 @@ public class CharacterController : MonoBehaviour
     private int _debrisMask;
     private int _floorMask;
 
+    private Image _headDisplay, _greenbar, _redbar;
+    private GameObject _canvasGO;
+    private Sprite happy, okay, sad, dead;
+
     private void Awake()
     {
         if (instance == null)
@@ -56,7 +63,10 @@ public class CharacterController : MonoBehaviour
         _originalScale = transform.localScale;
         _flippedScale = new Vector3(-_originalScale.x, _originalScale.y, _originalScale.z);
         _debrisMask = LayerMask.NameToLayer("Debris");
-        _floorMask = LayerMask.GetMask(new string[] {"Default", "Skeleton"});
+        _floorMask = LayerMask.GetMask(new string[] {"Default", "Skeleton", "DartBoard"});
+        _canvasGO.SetActive(true);
+
+        updateHealthBar();
     }
 
     // Update is called once per frame
@@ -178,14 +188,14 @@ public class CharacterController : MonoBehaviour
                 switch (_currentAttack)
                 {
                     case Attack.SlashDown:
-                        skele.Attack(10);
+                        skele.Damage(10);
                         
                         break;
                     case Attack.SlashUp:
-                        skele.Attack(20);
+                        skele.Damage(20);
                         break;
                     case Attack.Stab:
-                        skele.Attack(30);
+                        skele.Damage(30);
                         break;
                 }
                 _previousAttack = _currentAttack;
@@ -203,6 +213,10 @@ public class CharacterController : MonoBehaviour
         _headBoneTrans = transform.Find("lower_torso/upper_torso/head");
         _torsoBoneTrans = transform.Find("lower_torso/upper_torso/");
         _animator = transform.GetComponent<Animator>();
+        _headDisplay = transform.Find("PlayerCanvas/Health/Head").GetComponent<Image>();
+        _redbar = transform.Find("PlayerCanvas/Health/Bar").GetComponent<Image>();
+        _greenbar = transform.Find("PlayerCanvas/Health/Bar/Green").GetComponent<Image>();
+        _canvasGO = transform.Find("PlayerCanvas").gameObject;
     }
 
     private bool isGrounded()
@@ -254,6 +268,23 @@ public class CharacterController : MonoBehaviour
     public bool HitSkeleton()
     {
         return _hitSkeleton;
+    }
+
+    public void Damage(float damage)
+    {
+        health = Mathf.Max(0, health - damage);
+        updateHealthBar();
+    }
+
+    private void updateHealthBar()
+    {
+        _greenbar.rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, 100 * health / maxHealth);
+        _greenbar.rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, 100);
+
+        if(health >= 75)
+        {
+            //_headDisplay.sprite
+        }
     }
 }
 
