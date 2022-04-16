@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Boulder : MonoBehaviour
 {
-    public static float baseDamage = 30f;
-    private float speedDamageThreshold = 3f;
+    public static float baseDamage = 20f;
+    private float speedDamageThreshold = 2f;
     private Rigidbody2D _RB;
     private Vector2 previousVelocity;
 
