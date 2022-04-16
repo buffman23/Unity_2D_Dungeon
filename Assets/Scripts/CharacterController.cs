@@ -42,7 +42,8 @@ public class CharacterController : MonoBehaviour
 
     private Image _headDisplay, _greenbar, _redbar;
     private GameObject _canvasGO;
-    private Sprite happy, okay, sad, dead;
+    private Sprite _happyHead, _okayHead, _sadHead, _deadHead;
+    private Sprite[] _headSprites;
 
     private void Awake()
     {
@@ -217,6 +218,20 @@ public class CharacterController : MonoBehaviour
         _redbar = transform.Find("PlayerCanvas/Health/Bar").GetComponent<Image>();
         _greenbar = transform.Find("PlayerCanvas/Health/Bar/Green").GetComponent<Image>();
         _canvasGO = transform.Find("PlayerCanvas").gameObject;
+
+        _headSprites = Resources.LoadAll<Sprite>("Sprites/Heads");
+
+        foreach(Sprite sprite in _headSprites)
+        {
+            if (sprite.name.Equals("Dead"))
+                _deadHead = sprite;
+            else if (sprite.name.Equals("High"))
+                _happyHead = sprite;
+            else if (sprite.name.Equals("Medium"))
+                _okayHead = sprite;
+            else if (sprite.name.Equals("Low"))
+                _sadHead = sprite;
+        }
     }
 
     private bool isGrounded()
@@ -276,14 +291,32 @@ public class CharacterController : MonoBehaviour
         updateHealthBar();
     }
 
+    public void Heal(float healing)
+    {
+        health = Mathf.Min(100, health + healing);
+        updateHealthBar();
+    }
+
     private void updateHealthBar()
     {
         _greenbar.rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, 100 * health / maxHealth);
         _greenbar.rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, 100);
 
-        if(health >= 75)
+        if (health >= 66)
         {
-            //_headDisplay.sprite
+            _headDisplay.sprite = _happyHead;
+        } 
+        else if (health >= 33)
+        {
+            _headDisplay.sprite = _okayHead;
+        }
+        else if (health > 0)
+        {
+            _headDisplay.sprite = _sadHead;
+        }
+        else
+        {
+            _headDisplay.sprite = _deadHead;
         }
     }
 }
