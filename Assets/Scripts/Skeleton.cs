@@ -153,16 +153,14 @@ public class Skeleton : MonoBehaviour
 
         if(health == 0)
         {
-            dead = true;
-            
-
-
-
-            StartCoroutine(SkeletonDeath());
+            if(!dead)
+                StartCoroutine(SkeletonDeath());
         }
     }
     IEnumerator SkeletonDeath()
     {
+        dead = true;
+
         Destroy(transform.Find("lower_torso").gameObject);
         Destroy(transform.GetComponent<BoxCollider2D>());
 

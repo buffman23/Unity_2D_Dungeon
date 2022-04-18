@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2866768003996833676
+--- !u!1 &1933087366437493076
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2866768003996833776}
-  - component: {fileID: 2866768003996833777}
-  - component: {fileID: 2866768003996833678}
-  - component: {fileID: 2866768003996833679}
-  - component: {fileID: 8786776552394971774}
-  m_Layer: 10
-  m_Name: Boulder
+  - component: {fileID: 2687334421219490023}
+  - component: {fileID: 434248211791592479}
+  - component: {fileID: 7418842958359134628}
+  - component: {fileID: 4344901660772114086}
+  m_Layer: 0
+  m_Name: Coin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2866768003996833776
+--- !u!4 &2687334421219490023
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2866768003996833676}
+  m_GameObject: {fileID: 1933087366437493076}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 270.232, y: 558.301, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &2866768003996833777
+--- !u!212 &434248211791592479
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2866768003996833676}
+  m_GameObject: {fileID: 1933087366437493076}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -74,65 +73,42 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1cfe60a131fa3b94bb3588638bbc19bc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 88ca2c08569a1574c84d72d9f80bfab3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.52, y: 2.55}
+  m_Size: {x: 0.84, y: 0.85}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &2866768003996833678
-CircleCollider2D:
+--- !u!70 &7418842958359134628
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2866768003996833676}
+  m_GameObject: {fileID: 1933087366437493076}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 2b2278d6e2ee82840a7cda0135ebf05d, type: 2}
-  m_IsTrigger: 0
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 1.1
---- !u!50 &2866768003996833679
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2866768003996833676}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 1
-  m_Mass: 3.8013275
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!114 &8786776552394971774
+  m_Offset: {x: 0.0031433105, y: -0.01889038}
+  m_Size: {x: 0.56915283, y: 0.70721436}
+  m_Direction: 0
+--- !u!114 &4344901660772114086
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2866768003996833676}
+  m_GameObject: {fileID: 1933087366437493076}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b095bb93f816bdd4d9e49347864680ef, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b133591705879f42b68ca7478cd3d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseDamage: 50
-  speedDamageThreshold: 5

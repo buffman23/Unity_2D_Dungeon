@@ -9,6 +9,7 @@ public class Dart : MonoBehaviour
 
     private float _maxTimeAlive = 15f, _timeAlive;
     private Rigidbody2D _RB;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +39,14 @@ public class Dart : MonoBehaviour
         {
             cc.Damage(Dart.damage);
             cc.Knockback(Dart.knockBack * _RB.velocity.normalized);
+        }
+        else if(collision.gameObject.GetComponent<Skeleton>() == null)
+        {
+            Rigidbody2D rb;
+            if ((rb = collision.gameObject.GetComponent<Rigidbody2D>()) != null)
+            {
+                rb.AddForce(Dart.knockBack * .2f * _RB.velocity.normalized, ForceMode2D.Impulse);
+            }
         }
         Destroy(this.gameObject);
     }

@@ -13,7 +13,7 @@ public class MenuController : MonoBehaviour
     {
         InitReferences();
 
-        _playButton.onClick.AddListener(() => LoadScene("GameScene"));
+        _playButton.onClick.AddListener(() => LoadScene("Lvl1"));
         _characterCreatorButton.onClick.AddListener(() => LoadScene("PlayerCreateScene"));
         _creditsButton.onClick.AddListener(() => LoadScene("CreditsScene"));
         _exitButton.onClick.AddListener(Quit);

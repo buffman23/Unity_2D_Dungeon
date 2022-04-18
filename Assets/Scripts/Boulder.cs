@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class Boulder : MonoBehaviour
 {
-    public static float baseDamage = 20f;
-    private float speedDamageThreshold = 2f;
+    public float baseDamage = 20f;
+    public float speedDamageThreshold = 2f;
     private Rigidbody2D _RB;
-    private Vector2 previousVelocity;
 
     // Start is called before the first frame update
     void Start()
@@ -21,28 +20,30 @@ public class Boulder : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
-    {
-        previousVelocity = _RB.velocity;
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Rigidbody2D otherRB;
         if ((otherRB = collision.gameObject.GetComponent<Rigidbody2D>()) == null)
             return;
 
-        if (previousVelocity.magnitude < otherRB.velocity.magnitude)
-            return;
+        Vector2 vec1 = -(collision.relativeVelocity - otherRB.velocity);
+        Vector2 vec2 = (otherRB.transform.position + (Vector3)otherRB.centerOfMass - transform.position);
 
-        float mag = (previousVelocity - otherRB.velocity).magnitude;
-        Debug.Log("Mag: " + mag);
-        if (mag >= speedDamageThreshold)
+        float contribution = Vector2.Dot(vec1.normalized, vec2.normalized);
+        //Debug.Log("Collision angle:" + (Mathf.Acos(contribution) * Mathf.Rad2Deg));
+
+        Vector2 boulderImpact = vec1 * contribution;
+        float mag = boulderImpact.magnitude;
+        //Debug.Log("Mag: " + mag);
+        if (mag >= speedDamageThreshold && (Mathf.Acos(contribution) * Mathf.Rad2Deg < 85))
         {
+            Debug.Log("Mag: " + mag);
             CharacterController cc;
             if((cc = collision.gameObject.GetComponent<CharacterController>()) != null)
             {
-                float damage = baseDamage + (int)((mag - speedDamageThreshold) * 10);
+                //float damage = baseDamage + (int)((mag - speedDamageThreshold) * 5);
+                // do more damage if boulder if falling down onto entity
+                float damage = (int)(Mathf.Abs(boulderImpact.x * .05f) + Mathf.Abs(boulderImpact.y) * (boulderImpact.y < 0 ? 2 : .05)) * 5;
                 cc.Damage(damage);
                 return;
             }
@@ -50,7 +51,9 @@ public class Boulder : MonoBehaviour
             Skeleton skele;
             if ((skele = collision.gameObject.GetComponent<Skeleton>()) != null)
             {
-                float damage = baseDamage + (int)((mag - speedDamageThreshold) * 10);
+                //float damage = baseDamage + (int)((mag - speedDamageThreshold) * 5);
+                // do more damage if boulder if falling down onto entity
+                float damage = (int)(Mathf.Abs(boulderImpact.x * .05f) + Mathf.Abs(boulderImpact.y) * (boulderImpact.y < 0 ? 2 : .05)) * 5;
                 skele.Damage(damage);
                 return;
             }

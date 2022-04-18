@@ -18,7 +18,7 @@ public class Bomb : MonoBehaviour
     private SpriteRenderer _SR;
 
     private LayerMask _hitLayerMask;
-    private int _playerLayer, _skeleLayer, _boulderLayer;
+    private int _playerLayer, _skeleLayer, _boulderLayer, _destroyableLayer;
 
     private bool exploding = false;
 
@@ -31,10 +31,11 @@ public class Bomb : MonoBehaviour
         _SR = GetComponent<SpriteRenderer>();
         _baselineColor = _SR.color;
 
-        _hitLayerMask = LayerMask.GetMask("Player", "Skeleton", "Boulder");
+        _hitLayerMask = LayerMask.GetMask("Player", "Skeleton", "Boulder", "Destroyable");
         _playerLayer = LayerMask.NameToLayer("Player");
         _skeleLayer = LayerMask.NameToLayer("Skeleton");
         _boulderLayer = LayerMask.NameToLayer("Boulder");
+        _destroyableLayer = LayerMask.NameToLayer("Destroyable");
     }
 
 
@@ -124,6 +125,10 @@ public class Bomb : MonoBehaviour
                     skele.Damage(Bomb.damage);
                     skele.Knockback(explosionDirection * Bomb.explosionForce / 2);
                 }
+            }
+            else if(collider.gameObject.layer == _destroyableLayer)
+            {
+                Destroy(collider.gameObject);
             }
             else
             {

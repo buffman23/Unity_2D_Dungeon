@@ -38,7 +38,7 @@ public class BombHole : Trap
         //bombGO.transform.Rotate(Vector3.forward * direction);
 
         Rigidbody2D rb = bombGO.GetComponent<Rigidbody2D>();
-        Debug.Log(new Vector2(Mathf.Cos(direction * Mathf.Deg2Rad), Mathf.Sin(direction * Mathf.Deg2Rad)) * bombSpeed * rb.mass);
+        
         rb.AddForce(new Vector2(Mathf.Cos(direction * Mathf.Deg2Rad), Mathf.Sin(direction * Mathf.Deg2Rad)) * bombSpeed * rb.mass, ForceMode2D.Impulse);
     }
 }

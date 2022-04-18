@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour
@@ -19,6 +20,8 @@ public class CharacterController : MonoBehaviour
     public bool allowAttack;
 
     public static CharacterController instance;
+
+    public UnityEvent died;
 
     private Vector3 _speedVec;
     private float _maxSpeed;
@@ -58,6 +61,7 @@ public class CharacterController : MonoBehaviour
             Destroy(this);
         }
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,8 +70,7 @@ public class CharacterController : MonoBehaviour
         _originalScale = transform.localScale;
         _flippedScale = new Vector3(-_originalScale.x, _originalScale.y, _originalScale.z);
         _debrisMask = LayerMask.NameToLayer("Debris");
-        _floorMask = LayerMask.GetMask(new string[] {"Default", "Skeleton", "DartBoard"});
-        _canvasGO.SetActive(true);
+        _floorMask = LayerMask.GetMask(new string[] {"Default", "Skeleton", "DartBoard", "Boulder"});
 
         foreach (Transform childTrans in transform)
         {
@@ -231,10 +234,10 @@ public class CharacterController : MonoBehaviour
         _headBoneTrans = transform.Find("lower_torso/upper_torso/head");
         _torsoBoneTrans = transform.Find("lower_torso/upper_torso/");
         _animator = transform.GetComponent<Animator>();
-        _headDisplay = transform.Find("PlayerCanvas/Health/Head").GetComponent<Image>();
-        _redbar = transform.Find("PlayerCanvas/Health/Bar").GetComponent<Image>();
-        _greenbar = transform.Find("PlayerCanvas/Health/Bar/Green").GetComponent<Image>();
-        _canvasGO = transform.Find("PlayerCanvas").gameObject;
+        _headDisplay = GameObject.Find("Canvas/Health/Head").GetComponent<Image>();
+        _redbar = GameObject.Find("Canvas/Health/Bar").GetComponent<Image>();
+        _greenbar = GameObject.Find("Canvas/Health/Bar/Green").GetComponent<Image>();
+        _canvasGO = GameObject.Find("Canvas");
         _playerCameraGO = transform.Find("PlayerCamera").gameObject;
 
         _headSprites = Resources.LoadAll<Sprite>("Sprites/Heads");
@@ -252,7 +255,7 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    private bool isGrounded()
+    public bool isGrounded()
     {
         RaycastHit2D hit = Physics2D.Raycast(_floorCheck.position, -Vector2.up, floorThreshold, _floorMask);
         return hit.collider != null;
@@ -309,6 +312,7 @@ public class CharacterController : MonoBehaviour
         updateHealthBar();
         if(health == 0)
         {
+            died.Invoke();
             StartCoroutine(FallApart());
             _playerCameraGO.transform.SetParent(null);
             //_playerCameraGO.
