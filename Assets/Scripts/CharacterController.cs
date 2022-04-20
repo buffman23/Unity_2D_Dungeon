@@ -23,6 +23,8 @@ public class CharacterController : MonoBehaviour
 
     public UnityEvent died;
 
+    public bool frozen;
+
     private Vector3 _speedVec;
     private float _maxSpeed;
     private Rigidbody2D _rigidBody;
@@ -70,7 +72,7 @@ public class CharacterController : MonoBehaviour
         _originalScale = transform.localScale;
         _flippedScale = new Vector3(-_originalScale.x, _originalScale.y, _originalScale.z);
         _debrisMask = LayerMask.NameToLayer("Debris");
-        _floorMask = LayerMask.GetMask(new string[] {"Default", "Skeleton", "DartBoard", "Boulder"});
+        _floorMask = LayerMask.GetMask(new string[] {"Default", "Skeleton", "DartBoard", "Boulder", "Destroyable"});
 
         foreach (Transform childTrans in transform)
         {
@@ -87,7 +89,7 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (health == 0)
+        if (health == 0 || frozen)
             return;
 
         if (Input.GetMouseButtonDown(0))
@@ -102,7 +104,7 @@ public class CharacterController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (health == 0)
+        if (health == 0 || frozen)
             return;
 
         float accX = 0;

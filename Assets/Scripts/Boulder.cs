@@ -27,7 +27,7 @@ public class Boulder : MonoBehaviour
             return;
 
         Vector2 vec1 = -(collision.relativeVelocity - otherRB.velocity);
-        Vector2 vec2 = (otherRB.transform.position + (Vector3)otherRB.centerOfMass - transform.position);
+        Vector2 vec2 = ((Vector3)otherRB.worldCenterOfMass - transform.position);
 
         float contribution = Vector2.Dot(vec1.normalized, vec2.normalized);
         //Debug.Log("Collision angle:" + (Mathf.Acos(contribution) * Mathf.Rad2Deg));

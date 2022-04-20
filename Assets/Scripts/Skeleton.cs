@@ -32,6 +32,8 @@ public class Skeleton : MonoBehaviour
     private static Transform _targetTrans1, _targetTrans2;
     private static int _default_layer = 0;
 
+    private static GameObject _coinPrefab;
+
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +57,8 @@ public class Skeleton : MonoBehaviour
     {
         if (dead)
             return;
+
+        //Debug.DrawLine(CharacterController.instance.GetComponent<Rigidbody2D>().worldCenterOfMass, _rigidBody.worldCenterOfMass);
 
         Vector3 velocity = _rigidBody.velocity;
         _animator.SetFloat("VelocityX", velocity.x);
@@ -135,6 +139,11 @@ public class Skeleton : MonoBehaviour
             _targetTrans1 = _characterController.transform;
             _targetTrans2 = _characterController.transform.Find("Torso");
         }
+
+        if(_coinPrefab == null)
+        {
+            _coinPrefab = Resources.Load<GameObject>("Prefabs/Coin");
+        }
     }
 
     public void Knockback(Vector3 force)
@@ -153,8 +162,12 @@ public class Skeleton : MonoBehaviour
 
         if(health == 0)
         {
-            if(!dead)
+            if (!dead)
+            {
+                GameObject coin = Instantiate(_coinPrefab);
+                coin.transform.position = (Vector3)_rigidBody.worldCenterOfMass;
                 StartCoroutine(SkeletonDeath());
+            }
         }
     }
     IEnumerator SkeletonDeath()

@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 0
-  dartSpeed: 1
+  dartSpeed: 10
 --- !u!1 &8569759067507699856
 GameObject:
   m_ObjectHideFlags: 0
