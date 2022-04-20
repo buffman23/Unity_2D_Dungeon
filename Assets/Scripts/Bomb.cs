@@ -22,11 +22,16 @@ public class Bomb : MonoBehaviour
 
     private bool exploding = false;
 
+    private AudioSource _AS;
+    private static AudioClip[] _boomAudios;
+
 
     private float _maxTimeAlive = 15f, _timeAlive;
     // Start is called before the first frame update
     void Start()
     {
+        InitReferences();
+
         _redBombThreshold = fuse * .50f;
         _SR = GetComponent<SpriteRenderer>();
         _baselineColor = _SR.color;
@@ -66,6 +71,15 @@ public class Bomb : MonoBehaviour
 
     void InitReferences()
     {
+        _AS = GetComponent<AudioSource>();
+
+        if(_boomAudios == null)
+        {
+            _boomAudios = new AudioClip[3];
+            _boomAudios[0] = SoundController.instance.getClip("explosion01");
+            _boomAudios[1] = SoundController.instance.getClip("explosion02");
+            _boomAudios[2] = SoundController.instance.getClip("explosion03");
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -94,10 +108,16 @@ public class Bomb : MonoBehaviour
 
         exploding = true;
 
+        int randIdx = Random.Range(0, _boomAudios.Length);
+        _AS.clip = _boomAudios[randIdx];
+        _AS.Play();
+
         Destroy(GetComponent<Rigidbody2D>());
         Destroy(GetComponent<Collider>());
 
-        transform.Find("Explosion").gameObject.SetActive(true);
+        GameObject explosionGO = transform.Find("Explosion").gameObject;
+        explosionGO.SetActive(true);
+
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 2f, _hitLayerMask);
         foreach(Collider2D collider in colliders)
         {
@@ -152,6 +172,16 @@ public class Bomb : MonoBehaviour
         }
 
         yield return new WaitForSeconds(.3333f);
+
+        explosionGO.SetActive(false);
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+
+        while (_AS.isPlaying)
+        {
+            yield return new WaitForSeconds(.1f);
+        }
+
         Destroy(this.gameObject);
     }
 

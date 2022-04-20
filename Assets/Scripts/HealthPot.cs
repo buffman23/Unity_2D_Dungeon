@@ -26,6 +26,8 @@ public class HealthPot : MonoBehaviour
 
         cc.Heal(healthRestore);
 
+        SoundController.instance.PlayAudio("bottle");
+
         Destroy(this.gameObject);
     }
 }

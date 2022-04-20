@@ -32,6 +32,12 @@ public class DeathTouch : MonoBehaviour
         {
             skele.Damage(100000);
         }
+
+        Bomb bomb;
+        if ((bomb = collision.gameObject.GetComponent<Bomb>()) != null)
+        {
+            Destroy(collision.gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,6 +55,9 @@ public class DeathTouch : MonoBehaviour
         if ((skele = other.gameObject.GetComponent<Skeleton>()) != null)
         {
             skele.Damage(100000);
+            return;
         }
+
+        
     }
 }

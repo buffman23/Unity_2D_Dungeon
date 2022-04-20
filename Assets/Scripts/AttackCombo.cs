@@ -5,22 +5,31 @@ using UnityEngine;
 public class AttackCombo : StateMachineBehaviour
 {
     bool canHitCombo;
-
+    bool audioPlayed;
 
     //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         canHitCombo = true;
+        audioPlayed = false;
         animator.SetBool("HitCombo", false);
 
         if (stateInfo.IsName("NoAttack"))
+        {
             CharacterController.instance.setAttack(Attack.None);
+        }
         else if (stateInfo.IsName("SlashUp"))
+        {
             CharacterController.instance.setAttack(Attack.SlashUp);
+        }
         else if (stateInfo.IsName("SlashDown"))
+        {
             CharacterController.instance.setAttack(Attack.SlashDown);
+        }
         else if (stateInfo.IsName("Stab"))
+        {
             CharacterController.instance.setAttack(Attack.Stab);
+        }
 
         CharacterController.instance.allowAttack = false;
     }
@@ -28,6 +37,25 @@ public class AttackCombo : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (!audioPlayed)
+        {
+            if (stateInfo.normalizedTime > .1 && stateInfo.IsName("SlashUp"))
+            {
+                SoundController.instance.PlayAudio("swing2");
+                audioPlayed = true;
+            }
+            else if (stateInfo.normalizedTime > .3 && stateInfo.IsName("SlashDown"))
+            {
+                SoundController.instance.PlayAudio("swing");
+                audioPlayed = true;
+            }
+            else if (stateInfo.normalizedTime > .2 && stateInfo.IsName("Stab"))
+            {
+                SoundController.instance.PlayAudio("swing3");
+                audioPlayed = true;
+            }
+        }
+
         if (canHitCombo)
         {
             if(Input.GetMouseButtonDown(0))

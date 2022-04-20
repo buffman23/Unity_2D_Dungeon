@@ -15,7 +15,6 @@ public class WinController: MonoBehaviour
         InitReferneces();
 
         _mainMenuButton.onClick.AddListener(OnMainMenuButtonClick);
-        _health.SetActive(false);
         CharacterController.instance.frozen = true;
 
         

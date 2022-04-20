@@ -2,4 +2,9 @@ Tutorial Videos:
 How to rig a 2D Sprite: https://www.youtube.com/watch?v=eXIuizGzY2A
 How to make a health bar: https://www.youtube.com/watch?v=v1UGTTeQzbo
 
+Skeleton sounds: by ArcadeParty @ https://opengameart.org/content/zombie-skeleton-monster-voice-effects
+Potion, coin, door, and dagger swing sounds: by artisticdude @ https://opengameart.org/content/rpg-sound-pack
+Explosion sounds: by Unamed @ https://opengameart.org/content/9-explosion-sounds
+Dart shoot sound: by dorkster @ https://opengameart.org/content/bow-arrow-shot
+Dart wobble sound: by qubodup @ https://opengameart.org/content/wood-wobbling-rattling
 Sprites Created using Krita and Adobe Photoshop

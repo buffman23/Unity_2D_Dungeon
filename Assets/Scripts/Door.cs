@@ -28,6 +28,7 @@ public class Door : MonoBehaviour
 
         if((cc = collision.gameObject.GetComponent<CharacterController>()) != null)
         {
+            SoundController.instance.PlayAudio("door", .5f);
             LoadScene(nextScene);
         }
     }

@@ -191,10 +191,14 @@ public class Skeleton : MonoBehaviour
 
         while(bones.Count > 0)
         {
-            int idx = Random.Range(0, bones.Count);
-            GameObject bone = bones[idx];
-            bones.RemoveAt(idx);
-            Destroy(bone.GetComponent<BoxCollider2D>());
+            try
+            {
+                int idx = Random.Range(0, bones.Count);
+                GameObject bone = bones[idx];
+                bones.RemoveAt(idx);
+                Destroy(bone.GetComponent<BoxCollider2D>());
+            }
+            catch (MissingReferenceException ex) { }
             yield return new WaitForSeconds(.1f);
         }
 
