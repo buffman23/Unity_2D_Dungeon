@@ -72,9 +72,12 @@ public class SoundController : MonoBehaviour
         try
         {
             AudioSource source = _sourceDict[audioName];
-            source.volume = volume;
-            source.loop = loop;
-            source.Play();
+            if (!source.isPlaying)
+            {
+                source.volume = volume;
+                source.loop = loop;
+                source.Play();
+            }
         }
         catch (KeyNotFoundException ex)
         {

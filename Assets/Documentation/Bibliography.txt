@@ -2,9 +2,20 @@ Tutorial Videos:
 How to rig a 2D Sprite: https://www.youtube.com/watch?v=eXIuizGzY2A
 How to make a health bar: https://www.youtube.com/watch?v=v1UGTTeQzbo
 
+Sounds (all from OpenGameArt.org):
 Skeleton sounds: by ArcadeParty @ https://opengameart.org/content/zombie-skeleton-monster-voice-effects
 Potion, coin, door, and dagger swing sounds: by artisticdude @ https://opengameart.org/content/rpg-sound-pack
 Explosion sounds: by Unamed @ https://opengameart.org/content/9-explosion-sounds
 Dart shoot sound: by dorkster @ https://opengameart.org/content/bow-arrow-shot
 Dart wobble sound: by qubodup @ https://opengameart.org/content/wood-wobbling-rattling
+Victory Music: by el-corleo @ https://opengameart.org/content/victory-song
+Dungeon Music: by Fantasy Musica @ https://opengameart.org/content/dungeon-01
 Sprites Created using Krita and Adobe Photoshop
+
+Game title font: Breathe Fire III by Chequered Ink @ https://www.fontspace.com/category/rpg
+
+Inspired by:
+Grey Menu Button Design inspired by Minesweeper Tiles.
+Mele combo attack mechanic inspried by Pirates of the Carribean Online.
+Darts, bomb, and boulder trap mechanic inspired by Terraria.
+Pressure plate mechanic inspured by Terraria/Minecraft.

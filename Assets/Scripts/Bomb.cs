@@ -131,7 +131,7 @@ public class Bomb : MonoBehaviour
                     Vector2 centerOfMass = cc.gameObject.GetComponent<Rigidbody2D>().centerOfMass;
                     Vector3 explosionDirection = (new Vector3(centerOfMass.x, centerOfMass.y, transform.position.z) + collider.transform.position - this.transform.position).normalized;
                     Debug.DrawRay(transform.position, explosionDirection * Bomb.explosionForce, Color.white);
-                    cc.Damage(Bomb.damage);
+                    cc.Damage(Bomb.damage * GameController.instance.difficultyMultiplier);
                     cc.Knockback(explosionDirection * Bomb.explosionForce);
                 }
             }

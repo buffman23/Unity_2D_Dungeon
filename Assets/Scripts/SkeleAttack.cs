@@ -27,7 +27,7 @@ public class SkeleAttack : StateMachineBehaviour
             //knockback.y = Mathf.Max(knockbackTemplate.y - CharacterController.instance.GetComponent<Rigidbody2D>().velocity.y);
 
             CharacterController.instance.Knockback(knockback);
-            CharacterController.instance.Damage(Skeleton.attackDamage);
+            CharacterController.instance.Damage(Skeleton.attackDamage * GameController.instance.difficultyMultiplier);
             //skele.Knockback(-knockforward);
             cooldown = true;
         }

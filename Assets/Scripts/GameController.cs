@@ -9,11 +9,18 @@ public class GameController : MonoBehaviour
 
     public static GameController instance;
 
+    public float difficultyMultiplier = 1f;
+    public Color playerColor;
+    public float hueSliderValue;
+    public string playerName;
+
     private Text _pointsText;
     private GameObject deathMenu;
     private int _points;
     private Button respawnButton, mainMenuButton;
     private Canvas canvas;
+    private Color nullColor = new Color(0f, 0f, 0f);
+
 
     private void Awake()
     {
@@ -21,6 +28,8 @@ public class GameController : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(this);
+
+            playerColor = Color.white;
         }
         else
         {
@@ -39,6 +48,11 @@ public class GameController : MonoBehaviour
 
             if (deathMenu != null)
                 deathMenu.SetActive(false);
+
+            if(playerColor != null && !playerColor.Equals(nullColor))
+            {
+                GameObject.Find("Player").GetComponent<CharacterController>().setColor(playerColor);
+            }
         }
     }
 
@@ -80,7 +94,10 @@ public class GameController : MonoBehaviour
             _pointsText.text = _points.ToString();
         }
 
-        CharacterController.instance.died.AddListener(OnPlayerDeath);
+        if (CharacterController.instance != null)
+        {
+            CharacterController.instance.died.AddListener(OnPlayerDeath);
+        }
     }
 
     public void addPoints(int points)

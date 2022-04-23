@@ -25,6 +25,8 @@ public class CharacterController : MonoBehaviour
 
     public bool frozen;
 
+    public SpriteRenderer[] colorable;
+
     private Vector3 _speedVec;
     private float _maxSpeed;
     private Rigidbody2D _rigidBody;
@@ -236,10 +238,13 @@ public class CharacterController : MonoBehaviour
         _headBoneTrans = transform.Find("lower_torso/upper_torso/head");
         _torsoBoneTrans = transform.Find("lower_torso/upper_torso/");
         _animator = transform.GetComponent<Animator>();
-        _headDisplay = GameObject.Find("Canvas/Health/Head").GetComponent<Image>();
-        _redbar = GameObject.Find("Canvas/Health/Bar").GetComponent<Image>();
-        _greenbar = GameObject.Find("Canvas/Health/Bar/Green").GetComponent<Image>();
         _canvasGO = GameObject.Find("Canvas");
+        if (GameObject.Find("Canvas/Health") != null)
+        {
+            _headDisplay = GameObject.Find("Canvas/Health/Head").GetComponent<Image>();
+            _redbar = GameObject.Find("Canvas/Health/Bar").GetComponent<Image>();
+            _greenbar = GameObject.Find("Canvas/Health/Bar/Green").GetComponent<Image>();
+        }
         _playerCameraGO = transform.Find("PlayerCamera").gameObject;
 
         _headSprites = Resources.LoadAll<Sprite>("Sprites/Heads");
@@ -254,6 +259,14 @@ public class CharacterController : MonoBehaviour
                 _okayHead = sprite;
             else if (sprite.name.Equals("Low"))
                 _sadHead = sprite;
+        }
+    }
+
+    public void setColor(Color color)
+    {
+        foreach(SpriteRenderer sr in colorable)
+        {
+            sr.color = color;
         }
     }
 
@@ -330,6 +343,9 @@ public class CharacterController : MonoBehaviour
 
     private void updateHealthBar()
     {
+        if (_greenbar == null)
+            return;
+
         _greenbar.rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, 100 * health / maxHealth);
         _greenbar.rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, 100);
 

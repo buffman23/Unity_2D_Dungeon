@@ -50,7 +50,7 @@ public class Dart : MonoBehaviour
 
         if((cc = collision.gameObject.GetComponent<CharacterController>()) != null)
         {
-            cc.Damage(Dart.damage);
+            cc.Damage(Dart.damage * GameController.instance.difficultyMultiplier);
             cc.Knockback(Dart.knockBack * _RB.velocity.normalized);
         }
         else if(collision.gameObject.GetComponent<Skeleton>() == null)

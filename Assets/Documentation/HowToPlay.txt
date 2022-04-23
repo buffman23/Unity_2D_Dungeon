@@ -1,0 +1,29 @@
+Make your way out of the dungeon by avoiding obstacles and killing skeletons. Exit each room by reaching the door. There are 5 rooms total in the dungeon.
+
+Start the game by going to Character Creator and choosing character color and difficulty.
+
+The player has 100hp.
+W,A,S,D to move. (A,D=Left,Right),(W=Jump),(S=Drop down)
+Shift to sprint.
+Left click to swing your dagger.
+Chain together dagger swings by clicking again after a successful hit. Spam clicking does not work. 
+Dagger attacks do 10,20,30 damage respectively.
+
+Skeletons have 100hp. Skeleton attacks do 10 base damage.
+Difficuly: Easy x1, Normal x1.5, Hard x2 damage.
+
+Darts do 10 damage and gives a small amount of knockback.
+Difficuly: Easy x1, Normal x1.5, Hard x2 damage.
+
+Boulder does damage based on its velocity when impacting a player or enemy.
+
+Bombs do 50 AOE damage and gives signifigant knockback.
+
+Health Potion heals 50 hp.
+
+Coins are used as a scoring system. Skeletons drop 1 coin.
+Coins reset every time you die.
+
+
+CHEATS:
+Press n key in a dungeon to skip to the next room.

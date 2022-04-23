@@ -579,6 +579,20 @@ MonoBehaviour:
   died:
     m_PersistentCalls:
       m_Calls: []
+  frozen: 0
+  colorable:
+  - {fileID: 2329852452951757309}
+  - {fileID: 2101759355670084524}
+  - {fileID: 7488399910843352083}
+  - {fileID: 3539564247180301465}
+  - {fileID: 4827966529121390267}
+  - {fileID: 2134320762275146225}
+  - {fileID: 1078809747867064889}
+  - {fileID: 624270821992241528}
+  - {fileID: 2813424338221069636}
+  - {fileID: 8321932900111670412}
+  - {fileID: 8785410862728796376}
+  - {fileID: 6250464771104519569}
 --- !u!1 &1699805627000198079
 GameObject:
   m_ObjectHideFlags: 0
