@@ -19,3 +19,5 @@ Grey Menu Button Design inspired by Minesweeper Tiles.
 Mele combo attack mechanic inspried by Pirates of the Carribean Online.
 Darts, bomb, and boulder trap mechanic inspired by Terraria.
 Pressure plate mechanic inspured by Terraria/Minecraft.
+
+2D sprites designed using Krita and Adobe Photoshop
